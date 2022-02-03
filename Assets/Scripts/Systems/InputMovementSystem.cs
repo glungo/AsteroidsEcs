@@ -1,10 +1,11 @@
+using Entities;
 using Physics;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Input
+namespace Systems
 {
-    public class InputSystem : SystemBase
+    public class InputMovementSystem : SystemBase
     {
         private CustomInput _input;
     
@@ -19,11 +20,13 @@ namespace Input
             var xAxis = _input.Keyboard.Movement.ReadValue<Vector2>().x;
             var yAxis = _input.Keyboard.Movement.ReadValue<Vector2>().y;
             var deltaTime = Time.DeltaTime;
-            Entities.WithAll<InputDriven, PhysicsDriven>().ForEach((ref InputDriven id, ref PhysicsDriven pd) =>
-            {
-                pd.Speed += yAxis * id.SpeedMultiplier * deltaTime;
-                pd.AngularSpeed += xAxis * (-1) * id.AngularSpeedMultiplier * deltaTime;
-            }).ScheduleParallel();
+
+            Entities.WithAll<InputDrivenMovement, PhysicsDrivenMovement>().ForEach(
+                (ref InputDrivenMovement id, ref PhysicsDrivenMovement pd) =>
+                {
+                    pd.Speed += yAxis * id.SpeedMultiplier * deltaTime;
+                    pd.AngularSpeed += xAxis * (-1) * id.AngularSpeedMultiplier * deltaTime;
+                }).Run();
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace Physics
 {
     [GenerateAuthoringComponent]
-    public struct PhysicsDriven : IComponentData
+    public struct PhysicsDrivenMovement : IComponentData
     {
         public float Speed;
         public float AngularSpeed;

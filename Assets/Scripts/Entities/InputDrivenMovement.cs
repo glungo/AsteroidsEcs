@@ -1,9 +1,9 @@
 ﻿using Unity.Entities;
 
-namespace Input
+namespace Entities
 {
     [GenerateAuthoringComponent]
-    public struct InputDriven : IComponentData
+    public struct InputDrivenMovement : IComponentData
     {
         public float SpeedMultiplier;
         public float AngularSpeedMultiplier;
