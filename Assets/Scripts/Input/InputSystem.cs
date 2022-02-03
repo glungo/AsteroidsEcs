@@ -22,7 +22,7 @@ namespace Input
             Entities.WithAll<InputDriven, PhysicsDriven>().ForEach((ref InputDriven id, ref PhysicsDriven pd) =>
             {
                 pd.Speed += yAxis * id.SpeedMultiplier * deltaTime;
-                pd.AngularSpeed += xAxis * id.AngularSpeedMultiplier * deltaTime;
+                pd.AngularSpeed += xAxis * (-1) * id.AngularSpeedMultiplier * deltaTime;
             }).ScheduleParallel();
         }
     }
