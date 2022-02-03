@@ -2,11 +2,12 @@
 
 namespace Physics
 {
+    [GenerateAuthoringComponent]
     public struct PhysicsDriven : IComponentData
     {
-        public float Speed; //acceleration is only in the forward direction
+        public float Speed;
         public float AngularSpeed;
-        public float Accel;
-        public float AngularAccel;
+        public float Drag;
+        public float AngularDrag;
     }
 }

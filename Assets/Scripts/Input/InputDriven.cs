@@ -2,6 +2,7 @@
 
 namespace Input
 {
+    [GenerateAuthoringComponent]
     public struct InputDriven : IComponentData
     {
         public float SpeedMultiplier;

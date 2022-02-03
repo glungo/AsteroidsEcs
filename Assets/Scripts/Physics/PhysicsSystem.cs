@@ -1,7 +1,6 @@
 ﻿using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace Physics
 {
@@ -14,9 +13,9 @@ namespace Physics
             {
                 rot.Value = math.mul(rot.Value, quaternion.RotateZ(pd.AngularSpeed * deltaTime));
                 tr.Value += math.mul(rot.Value, new float3(0, pd.Speed * deltaTime, 0));
-
-                pd.AngularSpeed -=  math.sign(pd.AngularSpeed) * pd.AngularAccel * deltaTime;
-                pd.Speed -=  math.sign(pd.Speed) * pd.Accel * deltaTime;
+                
+                pd.AngularSpeed -=  math.sign(pd.AngularSpeed) * pd.AngularDrag * deltaTime;
+                pd.Speed -=  math.sign(pd.Speed) * pd.Drag * deltaTime;
             }).Run();
         }
     }
