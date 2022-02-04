@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4275720059094474994}
   - component: {fileID: 4275720059094474995}
   - component: {fileID: -4248181868233366861}
-  - component: {fileID: -2030428175986385577}
+  - component: {fileID: 975408684}
   m_Layer: 1
   m_Name: ship
   m_TagString: Untagged
@@ -130,19 +130,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FireCooldown: 0.1
   BulletPrefab: {fileID: 3059341172980186118, guid: 4521a4566e3995347a4796212ae39218, type: 3}
---- !u!58 &-2030428175986385577
-CircleCollider2D:
+--- !u!114 &975408684
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3147369506652515131}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.49
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02473e98e542f394d8b9e61e000c25b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WrapOnBound: 1
