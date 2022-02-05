@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc2e6c9c64c149a7b0eaa7dd150f0c7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpeedMultiplier: 4
-  AngularSpeedMultiplier: 2
+  SpeedMultiplier: 10
+  AngularSpeedMultiplier: 40
 --- !u!114 &4275720059094474995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,8 +114,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 0
   AngularSpeed: 0
-  Drag: 0.7
-  AngularDrag: 0.6
+  Drag: 5
+  AngularDrag: 30
 --- !u!114 &-4248181868233366861
 MonoBehaviour:
   m_ObjectHideFlags: 0
