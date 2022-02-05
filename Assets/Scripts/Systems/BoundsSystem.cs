@@ -1,14 +1,13 @@
 using Entities;
-using Physics;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace Systems
 {
     public class WarpSystem : SystemBase
     {
+        private const float TOLERANCE = .4f;
         private EndSimulationEntityCommandBufferSystem _endSimulationEcbSystem;
         protected override void OnCreate()
         {
@@ -20,14 +19,15 @@ namespace Systems
         {
             var bounds = GetSingleton<CameraBounds>().CameraWorldSpaceBounds;
             var ecb = _endSimulationEcbSystem.CreateCommandBuffer().AsParallelWriter();
-            
-            Entities.ForEach((Entity e, int entityInQueryIndex, ref Translation tr, ref LocalToWorld ltw, ref BoundsBehaviour bb) =>
+
+            Entities.ForEach((Entity e, int entityInQueryIndex, ref Translation tr, ref LocalToWorld ltw,
+                ref BoundsBehaviour bb) =>
             {
                 var pos = ltw.Value.c3.xy;
-                var boundsX = pos.x < bounds.x;
-                var boundsY = pos.x > bounds.y;
-                var boundsZ = pos.y < bounds.z;
-                var boundsW = pos.y > bounds.w;
+                var boundsX = pos.x < bounds.x - TOLERANCE;
+                var boundsY = pos.x > bounds.y + TOLERANCE;
+                var boundsZ = pos.y < bounds.z - TOLERANCE;
+                var boundsW = pos.y > bounds.w + TOLERANCE;
                 if (!boundsX && !boundsY && !boundsZ && !boundsW) return;
                 if (bb.WrapOnBound)
                 {
