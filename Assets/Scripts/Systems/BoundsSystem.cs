@@ -5,23 +5,22 @@ using Unity.Transforms;
 
 namespace Systems
 {
-    public class WarpSystem : SystemBase
+    public class BoundsSystem : SystemBase
     {
         private const float TOLERANCE = .4f;
-        private EndSimulationEntityCommandBufferSystem _endSimulationEcbSystem;
-        protected override void OnCreate()
-        {
-            base.OnCreate();
-            _endSimulationEcbSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
-        }
+        private EndSimulationEntityCommandBufferSystem _commandBufferSystem;
 
+        protected override void OnCreate() {
+            base.OnCreate();
+            _commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+        }
+        
         protected override void OnUpdate()
         {
             var bounds = GetSingleton<CameraBounds>().CameraWorldSpaceBounds;
-            var ecb = _endSimulationEcbSystem.CreateCommandBuffer().AsParallelWriter();
-
-            Entities.ForEach((Entity e, int entityInQueryIndex, ref Translation tr, ref LocalToWorld ltw,
-                ref BoundsBehaviour bb) =>
+            var ecb = _commandBufferSystem.CreateCommandBuffer().AsParallelWriter();
+            Entities.ForEach((Entity e, int entityInQueryIndex,
+                ref Translation tr, ref LocalToWorld ltw, ref BoundsBehaviour bb) =>
             {
                 var pos = ltw.Value.c3.xy;
                 var boundsX = pos.x < bounds.x - TOLERANCE;
@@ -40,11 +39,10 @@ namespace Systems
                 }
                 else
                 {
-                    ecb.DestroyEntity(entityInQueryIndex, e);
+                    ecb.AddComponent<DestroyTag>(entityInQueryIndex, e);
                 }
             }).ScheduleParallel();
-            
-            _endSimulationEcbSystem.AddJobHandleForProducer(this.Dependency);
+            _commandBufferSystem.AddJobHandleForProducer(Dependency);
         }
     }
 }
