@@ -49,4 +49,4 @@ MonoBehaviour:
   - {fileID: 5483211883473341076, guid: 6157c1ecf62ed93428e5ade12852c51c, type: 3}
   - {fileID: 5483211883473341076, guid: 2e6d52aa8ebe20e459c819f39b953fc4, type: 3}
   MeteorSpawnCooldown: 1
-  MaxMeteorsPerRun: 20
+  MaxMeteorsPerRun: 5
