@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -6920590883977343111}
   - component: {fileID: -4232152911135289211}
   - component: {fileID: 3281981053954723401}
+  - component: {fileID: -9163429278485272553}
   m_Layer: 0
   m_Name: ufo
   m_TagString: Untagged
@@ -149,15 +150,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b275e5f92732148048d7b77e264ac30e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ShapeType: 0
+  m_ShapeType: 2
   m_PrimitiveCenter:
     x: 0
     y: 0
     z: 0
   m_PrimitiveSize:
-    x: 1
-    y: 1
-    z: 1
+    x: 0.82
+    y: 0.82
+    z: 0.82
   m_PrimitiveOrientation:
     Value:
       x: 0
@@ -165,15 +166,15 @@ MonoBehaviour:
       z: 0
     RotationOrder: 4
   m_Capsule:
-    Height: 1
-    Radius: 0.5
+    Height: 0.82
+    Radius: 0.41
     Axis: 2
   m_Cylinder:
-    Height: 1
-    Radius: 0.5
+    Height: 0.82
+    Radius: 0.41
     Axis: 2
   m_CylinderSideCount: 20
-  m_SphereRadius: 0.5
+  m_SphereRadius: 0.41
   m_MinimumSkinnedVertexWeight: 0.1
   m_ConvexHullGenerationParameters:
     m_SimplificationTolerance: 0.015
@@ -308,7 +309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02473e98e542f394d8b9e61e000c25b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WrapOnBound: 1
+  WrapOnBound: 0
 --- !u!114 &3281981053954723401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,3 +323,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 0
+--- !u!114 &-9163429278485272553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3857244781852080854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40420b8ec3784523987afad075226fbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ElapsedTimeSinceLastShot: 0
+  FireCooldown: 0.5
+  BulletPrefab: {fileID: 3059341172980186118, guid: c0e00fb1c49d18f40943339e976eacbf, type: 3}
