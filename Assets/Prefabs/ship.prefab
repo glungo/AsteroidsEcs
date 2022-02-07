@@ -297,8 +297,8 @@ MonoBehaviour:
         Category00: 0
         Category01: 1
         Category02: 0
-        Category03: 0
-        Category04: 0
+        Category03: 1
+        Category04: 1
         Category05: 0
         Category06: 0
         Category07: 0
@@ -351,4 +351,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d1023ba72d84e87beb52b0cdec108b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 1
+  Type: 2
