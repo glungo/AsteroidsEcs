@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Entities;
+using Components;
 using Unity.Entities;
-using static Entities.Collidable;
+using static Components.Collidable;
 
-namespace Systems
+namespace Systems.Collision_Handling
 {
     public interface ICollisionHandler
     {
@@ -12,11 +12,19 @@ namespace Systems
     }
 
     //default collision behaviour
-    public class DestroyOnCollision : ICollisionHandler
+    public struct DestroyOnCollision : ICollisionHandler
     {
         public void OnCollision(EntityCommandBuffer ecb, Entity e)
         {
             ecb.AddComponent<DestroyTag>(e);
+        }
+    }
+    
+    public struct SpawnMeteorsOnCollision : ICollisionHandler
+    {
+        public void OnCollision(EntityCommandBuffer ecb, Entity e)
+        {
+            ecb.AddComponent<SpawnSmallMeteorsTag>(e);
         }
     }
 
@@ -24,7 +32,7 @@ namespace Systems
     {
         private static readonly Dictionary<CollidableType, Type> SRegisteredTypes = new Dictionary<CollidableType, Type>()
         {
-            {CollidableType.Meteor, typeof(DestroyOnCollision)},
+            {CollidableType.Meteor, typeof(SpawnMeteorsOnCollision)},
             {CollidableType.Bullet, typeof(DestroyOnCollision)},
             {CollidableType.Player, typeof(DestroyOnCollision)}
         };
@@ -32,7 +40,7 @@ namespace Systems
         {
             var collisionBehaviour = 
                 SRegisteredTypes.ContainsKey(t) ? SRegisteredTypes[t] : typeof(DestroyOnCollision);
-            return Activator.CreateInstance(collisionBehaviour, true) as ICollisionHandler;
+            return Activator.CreateInstance(collisionBehaviour) as ICollisionHandler;
         }
     }
 }

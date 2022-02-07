@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace Physics
+namespace Components
 {
     [GenerateAuthoringComponent]
     public struct PhysicsDrivenMovement : IComponentData

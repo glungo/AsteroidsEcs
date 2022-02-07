@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-namespace Entities.Utils
+namespace Components.Utils
 {
     public struct EntityBuffer : IBufferElementData
     {

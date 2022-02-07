@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Entities.Utils;
+using Components.Utils;
 using Unity.Entities;
 using UnityEngine;
 
-namespace Entities.Authoring
+namespace Components.Authoring
 {
     public class MeteorSpawnerAuthoring : MonoBehaviour, IConvertGameObjectToEntity
     {
@@ -35,7 +35,7 @@ namespace Entities.Authoring
     }
 
     [UpdateInGroup(typeof(GameObjectDeclareReferencedObjectsGroup))]
-    internal class DeclareExplosionSpriteReference : GameObjectConversionSystem
+    internal class DeclareMeteorSpawnerReference : GameObjectConversionSystem
     {
         protected override void OnUpdate()
         {

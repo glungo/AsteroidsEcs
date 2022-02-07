@@ -1,4 +1,4 @@
-using Entities;
+using Components;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;

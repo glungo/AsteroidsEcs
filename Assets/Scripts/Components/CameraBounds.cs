@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Entities
+namespace Components
 {
     [GenerateAuthoringComponent]
     public struct CameraBounds : IComponentData

@@ -1,5 +1,4 @@
-﻿using Entities;
-using Physics;
+﻿using Components;
 using Unity.Entities;
 using Unity.Transforms;
 

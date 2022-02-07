@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-namespace Entities
+namespace Components
 {
     public struct MeteorSpawner : IComponentData
     {

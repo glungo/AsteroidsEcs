@@ -1,4 +1,4 @@
-﻿using Entities;
+﻿using Components;
 using Unity.Entities;
 
 namespace Systems
