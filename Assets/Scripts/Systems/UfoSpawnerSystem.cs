@@ -21,6 +21,7 @@ namespace Systems
             base.OnCreate();
             RequireSingletonForUpdate<UfoSpawner>();
             _random = new Random(123712);
+            _random.InitState();
             _endSimulationEcbSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         }
 
@@ -49,9 +50,8 @@ namespace Systems
             var side = _random.NextBool();
             buffer.SetComponent(entity, new Rotation
             {
-                Value = quaternion.RotateZ(side ? 1.5f * math.PI : math.PI/2)
+                Value = quaternion.RotateZ((side ? 1.5f * math.PI : math.PI/2) + _random.NextFloat(math.PI/4))
             });
-
             var bounds = _cameraBounds.CameraWorldSpaceBounds;
             buffer.SetComponent(entity, new Translation
             {

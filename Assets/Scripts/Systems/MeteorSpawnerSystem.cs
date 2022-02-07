@@ -25,6 +25,7 @@ namespace Systems
             base.OnCreate();
             RequireSingletonForUpdate<MeteorSpawner>();
             _random = new Random(123712);
+            _random.InitState();
             _endSimulationEcbSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         }
 
