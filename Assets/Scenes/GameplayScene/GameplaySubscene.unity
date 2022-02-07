@@ -292,10 +292,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: meteorSpawner
       objectReference: {fileID: 0}
-    - target: {fileID: 1493922988475664149, guid: 4c4db67b78cc2724e81072ab6062980f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2423591219000974012, guid: 4c4db67b78cc2724e81072ab6062980f, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -339,10 +335,6 @@ PrefabInstance:
     - target: {fileID: 2423591219000974012, guid: 4c4db67b78cc2724e81072ab6062980f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3024428154466885575, guid: 4c4db67b78cc2724e81072ab6062980f, type: 3}
-      propertyPath: MeteorSpawnCooldown
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c4db67b78cc2724e81072ab6062980f, type: 3}
