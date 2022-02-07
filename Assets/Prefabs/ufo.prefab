@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccea9ea98e38942e0b0938c27ed1903e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MotionType: 0
+  m_MotionType: 1
   m_Smoothing: 0
   m_Mass: 1
   m_LinearDamping: 0.01
@@ -308,7 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02473e98e542f394d8b9e61e000c25b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WrapOnBound: 0
+  WrapOnBound: 1
 --- !u!114 &3281981053954723401
 MonoBehaviour:
   m_ObjectHideFlags: 0
