@@ -9,6 +9,9 @@ namespace Systems
 {
     public class MeteorSpawnerSystem : SystemBase
     {
+        /* TODO: there is a abstraction to be made here. All spawners will use a CommandBuffer
+        control time and have a reference to the component holding the data for spawning */
+        
         private float _elapsedTime;
         private int _spawnedMeteors;
         private Random _random;
@@ -21,7 +24,6 @@ namespace Systems
         {
             base.OnCreate();
             RequireSingletonForUpdate<MeteorSpawner>();
-            var randomProvider = EntityManager.CreateEntity();
             _random = new Random(123712);
             _endSimulationEcbSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         }
@@ -72,20 +74,18 @@ namespace Systems
         {
             var buffer = _endSimulationEcbSystem.CreateCommandBuffer();
             var meteorEntities = EntityManager.GetBuffer<EntityBuffer>(_spawnerEntity);
-            var prefabCount = meteorEntities.Length;
-            var meteor = buffer.Instantiate(meteorEntities[_random.NextInt(0, prefabCount)].Element);
-            var bounds = _cameraBounds.CameraWorldSpaceBounds;
+            var meteor = buffer.Instantiate(meteorEntities[_random.NextInt(0, meteorEntities.Length)].Element);
+            
             var side = _random.NextBool();
-            var pos = new float3(_random.NextFloat(bounds.x, bounds.y), side ? bounds.z : bounds.w, 0);
-
             buffer.SetComponent(meteor, new Rotation
             {
                 Value = quaternion.RotateZ(side ? 1 : math.PI * _random.NextFloat(-math.PI / 8, math.PI / 8))
             });
 
+            var bounds = _cameraBounds.CameraWorldSpaceBounds;
             buffer.SetComponent(meteor, new Translation
             {
-                Value = pos
+                Value = new float3(_random.NextFloat(bounds.x, bounds.y), side ? bounds.z : bounds.w, 0)
             });
         }
     }
