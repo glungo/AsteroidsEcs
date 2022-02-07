@@ -4,7 +4,7 @@ using Unity.Transforms;
 
 namespace Systems
 {
-    public class BulletSpawnerSystem : SystemBase
+    public class PlayerShootingSystem : SystemBase
     {
         private float _elapsedTime;
         private CustomInput _input;
@@ -12,15 +12,16 @@ namespace Systems
         protected override void OnCreate()
         {
             //TODO: is there a better method to handle the new input system?
+            //probably wrap it in a component and pass it as singleton
             _input = new CustomInput();
             _input.Keyboard.Enable();
-            RequireSingletonForUpdate<Shooter>();
+            RequireSingletonForUpdate<Player>();
         }
 
         protected override void OnUpdate()
         {
-            var shooterEntity = GetSingletonEntity<Shooter>();
-            var shooterData = EntityManager.GetComponentData<Shooter>(shooterEntity);
+            var shooterEntity = GetSingletonEntity<Player>();
+            var shooterData = EntityManager.GetComponentData<Player>(shooterEntity);
             
             _elapsedTime += Time.DeltaTime;
             if (!_input.Keyboard.ShipSkills.triggered || _elapsedTime < shooterData.FireCooldown) return;

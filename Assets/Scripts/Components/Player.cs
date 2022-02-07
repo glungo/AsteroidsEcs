@@ -3,7 +3,7 @@
 namespace Components
 {
     [GenerateAuthoringComponent]
-    public struct Shooter : IComponentData
+    public struct Player : IComponentData
     {
         public float FireCooldown;
         public Entity BulletPrefab;
