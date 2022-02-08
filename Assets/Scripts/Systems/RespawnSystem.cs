@@ -41,6 +41,7 @@ namespace Systems
             
             World.GetOrCreateSystem<MeteorSpawnerSystem>().Reset();
             World.GetOrCreateSystem<UfoSpawnerSystem>().Reset();
+            World.GetOrCreateSystem<PickupSpawnerSystem>().Reset();
             EntityManager.DestroyEntity(GetSingletonEntity<RequestRespawn>());
             
             var player = EntityManager.Instantiate(_data.PlayerPrefab);
