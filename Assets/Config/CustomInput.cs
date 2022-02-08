@@ -33,6 +33,14 @@ public class @CustomInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Ship-Warp"",
+                    ""type"": ""Button"",
+                    ""id"": ""6ccc6a82-2dda-4a08-986d-4a44b21ff655"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -101,6 +109,17 @@ public class @CustomInput : IInputActionCollection, IDisposable
                     ""action"": ""Ship-Skills"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a5b2b19-7cc1-4f3c-863c-a573a03a2c49"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""basic_control_scheme"",
+                    ""action"": ""Ship-Warp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -128,6 +147,7 @@ public class @CustomInput : IInputActionCollection, IDisposable
         m_Keyboard = asset.FindActionMap("Keyboard", throwIfNotFound: true);
         m_Keyboard_Movement = m_Keyboard.FindAction("Movement", throwIfNotFound: true);
         m_Keyboard_ShipSkills = m_Keyboard.FindAction("Ship-Skills", throwIfNotFound: true);
+        m_Keyboard_ShipWarp = m_Keyboard.FindAction("Ship-Warp", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -179,12 +199,14 @@ public class @CustomInput : IInputActionCollection, IDisposable
     private IKeyboardActions m_KeyboardActionsCallbackInterface;
     private readonly InputAction m_Keyboard_Movement;
     private readonly InputAction m_Keyboard_ShipSkills;
+    private readonly InputAction m_Keyboard_ShipWarp;
     public struct KeyboardActions
     {
         private @CustomInput m_Wrapper;
         public KeyboardActions(@CustomInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Keyboard_Movement;
         public InputAction @ShipSkills => m_Wrapper.m_Keyboard_ShipSkills;
+        public InputAction @ShipWarp => m_Wrapper.m_Keyboard_ShipWarp;
         public InputActionMap Get() { return m_Wrapper.m_Keyboard; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -200,6 +222,9 @@ public class @CustomInput : IInputActionCollection, IDisposable
                 @ShipSkills.started -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnShipSkills;
                 @ShipSkills.performed -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnShipSkills;
                 @ShipSkills.canceled -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnShipSkills;
+                @ShipWarp.started -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnShipWarp;
+                @ShipWarp.performed -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnShipWarp;
+                @ShipWarp.canceled -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnShipWarp;
             }
             m_Wrapper.m_KeyboardActionsCallbackInterface = instance;
             if (instance != null)
@@ -210,6 +235,9 @@ public class @CustomInput : IInputActionCollection, IDisposable
                 @ShipSkills.started += instance.OnShipSkills;
                 @ShipSkills.performed += instance.OnShipSkills;
                 @ShipSkills.canceled += instance.OnShipSkills;
+                @ShipWarp.started += instance.OnShipWarp;
+                @ShipWarp.performed += instance.OnShipWarp;
+                @ShipWarp.canceled += instance.OnShipWarp;
             }
         }
     }
@@ -227,5 +255,6 @@ public class @CustomInput : IInputActionCollection, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnShipSkills(InputAction.CallbackContext context);
+        void OnShipWarp(InputAction.CallbackContext context);
     }
 }

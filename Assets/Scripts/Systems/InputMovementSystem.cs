@@ -1,17 +1,22 @@
 using Components;
 using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
+using Random = Unity.Mathematics.Random;
 
 namespace Systems
 {
     public class InputMovementSystem : SystemBase
     {
         private CustomInput _input;
-    
+        private Random _random;
         protected override void OnCreate()
         {
             _input = new CustomInput();
             _input.Keyboard.Enable();
+            _random = new Random(1239107);
+            _random.InitState();
             RequireSingletonForUpdate<InputDrivenMovement>();
         }
 
@@ -27,6 +32,15 @@ namespace Systems
                     pd.Speed += yAxis * id.SpeedMultiplier * deltaTime;
                     pd.AngularSpeed += xAxis * (-1) * id.AngularSpeedMultiplier * deltaTime;
                 }).Run();
+            
+            var warp = _input.Keyboard.ShipWarp.triggered;
+            if (!warp) return;
+            var player = GetSingletonEntity<Player>();
+            var camBounds = GetSingleton<CameraBounds>().CameraWorldSpaceBounds;
+            EntityManager.SetComponentData(player, new Translation
+            {
+                Value = new float3(_random.NextFloat(camBounds.y), _random.NextFloat(camBounds.w), 0)
+            });
         }
     }
 }

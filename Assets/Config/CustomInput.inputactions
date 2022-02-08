@@ -20,6 +20,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Ship-Warp",
+                    "type": "Button",
+                    "id": "6ccc6a82-2dda-4a08-986d-4a44b21ff655",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -86,6 +94,17 @@
                     "processors": "",
                     "groups": "basic_control_scheme",
                     "action": "Ship-Skills",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4a5b2b19-7cc1-4f3c-863c-a573a03a2c49",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "basic_control_scheme",
+                    "action": "Ship-Warp",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
