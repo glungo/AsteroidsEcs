@@ -3,6 +3,7 @@ using Unity.Entities;
 
 namespace Systems
 {
+    [UpdateAfter(typeof(CollisionSystem))]
     public class EntityDestructionSystem : SystemBase
     {
         private EndSimulationEntityCommandBufferSystem _commandBufferSystem;

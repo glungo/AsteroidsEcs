@@ -1,7 +1,6 @@
 using Components;
 using Systems.Collision_Handling;
 using Unity.Entities;
-using Unity.Jobs;
 using Unity.Physics;
 using Unity.Physics.Systems;
 
@@ -25,7 +24,7 @@ namespace Systems
         }
     }
     
-    public class CollisionSystem : JobComponentSystem
+    public class CollisionSystem : SystemBase
     {
         private BuildPhysicsWorld _buildPhysicsWorldSystem;
         private StepPhysicsWorld _stepPhysicsWorldSystem;
@@ -38,16 +37,16 @@ namespace Systems
             _commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         }
 
-        protected override JobHandle OnUpdate(JobHandle inputDeps)
+        protected override void OnUpdate()
         {
-            var jobHandle = new CollisionJob
+            Dependency = new CollisionJob
             {
                 Ecb = _commandBufferSystem.CreateCommandBuffer(),
                 CollidableGroup = GetComponentDataFromEntity<Collidable>()
-            }.Schedule(_stepPhysicsWorldSystem.Simulation, ref _buildPhysicsWorldSystem.PhysicsWorld, inputDeps);
+            }.Schedule(_stepPhysicsWorldSystem.Simulation, ref _buildPhysicsWorldSystem.PhysicsWorld, Dependency);
             
-            _commandBufferSystem.AddJobHandleForProducer(jobHandle);
-            return jobHandle;    
+            _commandBufferSystem.AddJobHandleForProducer(Dependency);
+            CompleteDependency();
         }
     }
 }
