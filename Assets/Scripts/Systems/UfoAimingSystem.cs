@@ -21,12 +21,13 @@ namespace Systems
             var playerPosition = EntityManager.GetComponentData<Translation>(GetSingletonEntity<Player>()).Value;
             var ecb = _endSimulationEcbSystem.CreateCommandBuffer().AsParallelWriter();
             var deltaTime = Time.DeltaTime;
-            Entities.ForEach((Entity entity, int entityInQueryIndex, ref Rotation rot, ref Translation translation, ref Ufo ufo, in LocalToWorld ltw) =>
+            Entities.ForEach((Entity entity, int entityInQueryIndex, ref Ufo ufo, in Translation translation,
+                in LocalToWorld ltw) =>
             {
                 //shoot player
                 ufo.ElapsedTimeSinceLastShot += deltaTime;
                 if (ufo.ElapsedTimeSinceLastShot < ufo.FireCooldown) return;
-                
+
                 var dir = playerPosition - translation.Value;
                 var bullet = ecb.Instantiate(entityInQueryIndex, ufo.BulletPrefab);
                 ecb.SetComponent(entityInQueryIndex, bullet, new Rotation

@@ -19,13 +19,14 @@ namespace Systems
             var deltaTime = Time.DeltaTime;
             var buffer = _endSimulationEcbSystem.CreateCommandBuffer().AsParallelWriter();
             
-            Entities.ForEach((Entity entity, int entityInQueryIndex,  ref MultiBulletPowerUp powerUp) =>
-            {
-                powerUp.RunningTime += deltaTime;
-                if (powerUp.RunningTime < powerUp.Duration) return;
-                buffer.RemoveComponent<MultiBulletPowerUp>(entityInQueryIndex, entity);
-            }).ScheduleParallel();
+            HandleMultiBulletPowerup(deltaTime, buffer);
+            HandleShield(deltaTime, buffer);
 
+            _endSimulationEcbSystem.AddJobHandleForProducer(Dependency);
+        }
+
+        private void HandleShield(float deltaTime, EntityCommandBuffer.ParallelWriter buffer)
+        {
             var shieldContainer = GetSingletonEntity<ShieldContainer>();
             var shieldPos = GetComponent<Translation>(shieldContainer);
             Entities.ForEach((Entity entity, int entityInQueryIndex, ref ShieldPowerUp powerUp,
@@ -47,8 +48,16 @@ namespace Systems
                 collidable.Invulnerable = false;
                 buffer.RemoveComponent<ShieldPowerUp>(entityInQueryIndex, entity);
             }).ScheduleParallel();
-            
-            _endSimulationEcbSystem.AddJobHandleForProducer(Dependency);
+        }
+
+        private void HandleMultiBulletPowerup(float deltaTime, EntityCommandBuffer.ParallelWriter buffer)
+        {
+            Entities.ForEach((Entity entity, int entityInQueryIndex, ref MultiBulletPowerUp powerUp) =>
+            {
+                powerUp.RunningTime += deltaTime;
+                if (powerUp.RunningTime < powerUp.Duration) return;
+                buffer.RemoveComponent<MultiBulletPowerUp>(entityInQueryIndex, entity);
+            }).ScheduleParallel();
         }
     }
 }

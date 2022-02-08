@@ -17,7 +17,7 @@ namespace Systems
             _input.Keyboard.Enable();
             _random = new Random(1239107);
             _random.InitState();
-            RequireSingletonForUpdate<InputDrivenMovement>();
+            RequireSingletonForUpdate<Player>();
         }
 
         protected override void OnUpdate()
@@ -33,6 +33,11 @@ namespace Systems
                     pd.AngularSpeed += xAxis * (-1) * id.AngularSpeedMultiplier * deltaTime;
                 }).Run();
             
+            Warp();
+        }
+
+        private void Warp()
+        {
             var warp = _input.Keyboard.ShipWarp.triggered;
             if (!warp) return;
             var player = GetSingletonEntity<Player>();

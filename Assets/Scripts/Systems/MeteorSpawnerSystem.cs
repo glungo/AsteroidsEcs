@@ -9,7 +9,6 @@ namespace Systems
     public class MeteorSpawnerSystem : EntitySpawnerSystem<MeteorSpawner>
     {
         private CameraBounds _cameraBounds;
-        private DynamicBuffer<EntityBuffer> _meteorPrefabs;
         protected override void OnCreate()
         {
             base.OnCreate();
@@ -20,7 +19,6 @@ namespace Systems
         {
             base.OnStartRunning();
             _cameraBounds = GetSingleton<CameraBounds>();
-            _meteorPrefabs = EntityManager.GetBuffer<EntityBuffer>(GetSingletonEntity<MeteorSpawner>());
         }
 
         protected override void OnUpdate()
@@ -29,8 +27,8 @@ namespace Systems
 
             _elapsedTime += Time.DeltaTime;
             if (_spawnedAmount >= _spawnerData.MaxMeteors || _elapsedTime < _spawnerData.MeteorCooldown) return;
-
-            SpawnEntity(_meteorPrefabs[_random.NextInt(0, _meteorPrefabs.Length)].Element);
+            var meteorPrefabs = EntityManager.GetBuffer<EntityBuffer>(GetSingletonEntity<MeteorSpawner>());
+            SpawnEntity(meteorPrefabs[_random.NextInt(0, meteorPrefabs.Length)].Element);
             _elapsedTime = 0;
             _spawnedAmount++;
         }
@@ -56,8 +54,8 @@ namespace Systems
         private void CreateSmallMeteors()
         {
             var ecb = _endSimulationEcbSystem.CreateCommandBuffer().AsParallelWriter();
-            Entities.ForEach((Entity e, int entityInQueryIndex, Translation tr, Meteor meteorComponent,
-                SpawnSmallMeteorsTag tag) =>
+            Entities.ForEach((Entity e, int entityInQueryIndex, in Translation tr, in Meteor meteorComponent,
+                in SpawnSmallMeteorsTag tag) =>
             {
                 for (var i = 0; i < meteorComponent.SmallMeteorAmount; ++i)
                 {

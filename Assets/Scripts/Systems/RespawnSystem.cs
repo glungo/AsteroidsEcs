@@ -10,7 +10,6 @@ namespace Systems
         private EntityQuery _collidablesQuery;
         private PlayerData _data;
         private CustomInput _input;
-        
         protected override void OnCreate()
         {
             base.OnCreate();
