@@ -43,6 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ea2b42521f4b9a9abe369696d7877d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UfoSpawnCooldown: 15
+  UfoSpawnCooldown: 7
   UfoPerRound: 2
   UfoPrefab: {fileID: 3857244781852080854, guid: 6f27baa6d87e6104a9c28ad89716a69a, type: 3}

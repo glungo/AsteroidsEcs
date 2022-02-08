@@ -323,6 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 3
+  Invulnerable: 0
 --- !u!114 &9042292753449349985
 MonoBehaviour:
   m_ObjectHideFlags: 0

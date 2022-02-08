@@ -322,3 +322,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 0
+  Invulnerable: 0
