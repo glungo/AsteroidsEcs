@@ -1,4 +1,4 @@
-# sandboxTest
+# Asteroids DOTS
 
 The design philosophy was to keep systems as simple as possible, having 5 major ones and some spawners.
 
