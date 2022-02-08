@@ -3,38 +3,24 @@ using Components.Utils;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using Random = Unity.Mathematics.Random;
 
 namespace Systems
 {
-    public class MeteorSpawnerSystem : SystemBase
+    public class MeteorSpawnerSystem : EntitySpawnerSystem<MeteorSpawner>
     {
-        /* TODO: there is a abstraction to be made here. All spawners will use a CommandBuffer
-        control time and have a reference to the component holding the data for spawning */
-        
-        private float _elapsedTime;
-        private int _spawnedMeteors;
-        private Random _random;
-        private Entity _spawnerEntity;
-        private MeteorSpawner _spawnerData;
         private CameraBounds _cameraBounds;
-        
-        private EndSimulationEntityCommandBufferSystem _endSimulationEcbSystem;
+        private DynamicBuffer<EntityBuffer> _meteorPrefabs;
         protected override void OnCreate()
         {
             base.OnCreate();
-            RequireSingletonForUpdate<MeteorSpawner>();
             RequireSingletonForUpdate<Player>();
-            _random = new Random(123712);
-            _random.InitState();
-            _endSimulationEcbSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         }
 
         protected override void OnStartRunning()
         {
-            _spawnerEntity = GetSingletonEntity<MeteorSpawner>();
-            _spawnerData = EntityManager.GetComponentData<MeteorSpawner>(_spawnerEntity);
+            base.OnStartRunning();
             _cameraBounds = GetSingleton<CameraBounds>();
+            _meteorPrefabs = EntityManager.GetBuffer<EntityBuffer>(GetSingletonEntity<MeteorSpawner>());
         }
 
         protected override void OnUpdate()
@@ -42,12 +28,29 @@ namespace Systems
             CreateSmallMeteors();
 
             _elapsedTime += Time.DeltaTime;
-            if (_spawnedMeteors >= _spawnerData.MaxMeteors || _elapsedTime < _spawnerData.MeteorCooldown) return;
+            if (_spawnedAmount >= _spawnerData.MaxMeteors || _elapsedTime < _spawnerData.MeteorCooldown) return;
 
-            SpawnRandomMeteor();
-
-            ++_spawnedMeteors;
+            SpawnEntity(_meteorPrefabs[_random.NextInt(0, _meteorPrefabs.Length)].Element);
             _elapsedTime = 0;
+            _spawnedAmount++;
+        }
+
+        protected override void SpawnEntity(Entity e)
+        {
+            var buffer = _endSimulationEcbSystem.CreateCommandBuffer();
+            var meteor = buffer.Instantiate(e);
+            
+            var side = _random.NextBool();
+            buffer.SetComponent(meteor, new Rotation
+            {
+                Value = quaternion.RotateZ(side ? 1 : math.PI * _random.NextFloat(-math.PI / 8, math.PI / 8))
+            });
+
+            var bounds = _cameraBounds.CameraWorldSpaceBounds;
+            buffer.SetComponent(meteor, new Translation
+            {
+                Value = new float3(_random.NextFloat(bounds.x, bounds.y), side ? bounds.z : bounds.w, 0)
+            });
         }
 
         private void CreateSmallMeteors()
@@ -70,31 +73,6 @@ namespace Systems
             }).ScheduleParallel();
 
             _endSimulationEcbSystem.AddJobHandleForProducer(Dependency);
-        }
-
-        private void SpawnRandomMeteor()
-        {
-            var buffer = _endSimulationEcbSystem.CreateCommandBuffer();
-            var meteorEntities = EntityManager.GetBuffer<EntityBuffer>(_spawnerEntity);
-            var meteor = buffer.Instantiate(meteorEntities[_random.NextInt(0, meteorEntities.Length)].Element);
-            
-            var side = _random.NextBool();
-            buffer.SetComponent(meteor, new Rotation
-            {
-                Value = quaternion.RotateZ(side ? 1 : math.PI * _random.NextFloat(-math.PI / 8, math.PI / 8))
-            });
-
-            var bounds = _cameraBounds.CameraWorldSpaceBounds;
-            buffer.SetComponent(meteor, new Translation
-            {
-                Value = new float3(_random.NextFloat(bounds.x, bounds.y), side ? bounds.z : bounds.w, 0)
-            });
-        }
-
-        public void Reset()
-        {
-            _spawnedMeteors = 0;
-            _elapsedTime = 0;
         }
     }
 }

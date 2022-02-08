@@ -37,6 +37,7 @@ namespace Systems
                 ufo.ElapsedTimeSinceLastShot = 0;
 
             }).ScheduleParallel();
+            _endSimulationEcbSystem.AddJobHandleForProducer(Dependency);
         }
     }
 }
