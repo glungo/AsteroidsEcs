@@ -1,5 +1,6 @@
 ﻿using Components;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Transforms;
 
 namespace Systems
@@ -8,7 +9,6 @@ namespace Systems
     {
         private float _elapsedTime;
         private CustomInput _input;
-
         protected override void OnCreate()
         {
             //TODO: is there a better method to handle the new input system?
@@ -27,9 +27,18 @@ namespace Systems
             if (!_input.Keyboard.ShipSkills.triggered || _elapsedTime < shooterData.FireCooldown) return;
             
             _elapsedTime = 0;
-            var bullet = EntityManager.Instantiate(shooterData.BulletPrefab);
-            EntityManager.SetComponentData(bullet, EntityManager.GetComponentData<Rotation>(shooterEntity));
-            EntityManager.SetComponentData(bullet, EntityManager.GetComponentData<Translation>(shooterEntity));
+            var bulletAmount = EntityManager.HasComponent<MultiBulletPowerUp>(shooterEntity) ? 8 : 1;
+            for (var i = 0; i < bulletAmount; ++i)
+            {
+                var bullet = EntityManager.Instantiate(shooterData.BulletPrefab);
+                EntityManager.SetComponentData(bullet, new Rotation
+                {
+                    Value = math.mul(quaternion.RotateZ(2 * i * math.PI / 8),
+                        EntityManager.GetComponentData<Rotation>(shooterEntity).Value)
+                });
+                EntityManager.SetComponentData(bullet, EntityManager.GetComponentData<Translation>(shooterEntity));
+            }
+            
         }
     }
 }

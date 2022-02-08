@@ -38,18 +38,64 @@ namespace Systems.Collision_Handling
         }
     }
 
+    public struct AddShieldOnCollision : ICollisionHandler
+    {
+        public void OnCollision(EntityCommandBuffer ecb, Entity e)
+        {
+            ecb.AddComponent(e, new ShieldPowerUp{Duration = 1.5f, RunningTime = 0});
+        }
+    }
+    
+    public struct AddMultiBulletOnCollision : ICollisionHandler
+    {
+        public void OnCollision(EntityCommandBuffer ecb, Entity e)
+        {
+            ecb.AddComponent(e, new MultiBulletPowerUp{Duration = 1f, RunningTime = 0});
+        }
+    }
+
     public static class CollisionBehaviourFactory
     {
-        private static readonly Dictionary<CollidableType, Type> SRegisteredTypes = new Dictionary<CollidableType, Type>()
+        private static readonly Dictionary<Tuple<CollidableType, CollidableType>, Type> SRegisteredTypes =
+            new Dictionary<Tuple<CollidableType, CollidableType>, Type>()
+            {
+                {
+                    new Tuple<CollidableType, CollidableType>(CollidableType.Meteor, CollidableType.Bullet),
+                    typeof(SpawnMeteorsOnCollision)
+                },
+                {
+                    new Tuple<CollidableType, CollidableType>(CollidableType.Meteor, CollidableType.Player),
+                    typeof(SpawnMeteorsOnCollision)
+                },
+                {
+                    new Tuple<CollidableType, CollidableType>(CollidableType.Player, CollidableType.Pickup_Shield),
+                    typeof(AddShieldOnCollision)
+                },
+                {
+                    new Tuple<CollidableType, CollidableType>(CollidableType.Player, CollidableType.Pickup_MultiBullet),
+                    typeof(AddMultiBulletOnCollision)
+                },
+                {
+                    new Tuple<CollidableType, CollidableType>(CollidableType.Player, CollidableType.Bullet),
+                    typeof(QueryForRespawnOnCollision)
+                },
+                {
+                    new Tuple<CollidableType, CollidableType>(CollidableType.Player, CollidableType.Meteor),
+                    typeof(QueryForRespawnOnCollision)
+                },
+                {
+                    new Tuple<CollidableType, CollidableType>(CollidableType.Player, CollidableType.Default),
+                    typeof(QueryForRespawnOnCollision)
+                },
+            };
+        public static ICollisionHandler GetCollisionBehaviour(CollidableType mainType, CollidableType secondaryType)
         {
-            {CollidableType.Meteor, typeof(SpawnMeteorsOnCollision)},
-            {CollidableType.Bullet, typeof(DestroyOnCollision)},
-            {CollidableType.Player, typeof(QueryForRespawnOnCollision)}
-        };
-        public static ICollisionHandler GetCollisionBehaviour(CollidableType t)
-        {
-            var collisionBehaviour = 
-                SRegisteredTypes.ContainsKey(t) ? SRegisteredTypes[t] : typeof(DestroyOnCollision);
+            var tuple = new Tuple<CollidableType, CollidableType>(mainType, secondaryType);
+
+            var collisionBehaviour = SRegisteredTypes.ContainsKey(tuple)
+                ? SRegisteredTypes[tuple]
+                : typeof(DestroyOnCollision);
+            
             return Activator.CreateInstance(collisionBehaviour) as ICollisionHandler;
         }
     }

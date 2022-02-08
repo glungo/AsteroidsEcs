@@ -14,14 +14,14 @@ namespace Systems
 
         public void Execute(CollisionEvent collisionEvent)
         {
-            for (var i = 0; i < 2; ++i)
-            {
-                var entity = i == 0? collisionEvent.EntityA : collisionEvent.EntityB;
-                if (!CollidableGroup.HasComponent(entity)) continue;
-                
-                var type = CollidableGroup[entity].Type;
-                CollisionBehaviourFactory.GetCollisionBehaviour(type).OnCollision(Ecb, entity);
-            }
+            if (!CollidableGroup.HasComponent(collisionEvent.EntityA) ||
+                !CollidableGroup.HasComponent(collisionEvent.EntityB)) return;
+            var typeA = CollidableGroup[collisionEvent.EntityA].Type;
+            var typeB = CollidableGroup[collisionEvent.EntityB].Type;
+            
+            CollisionBehaviourFactory.GetCollisionBehaviour(typeB, typeA).OnCollision(Ecb, collisionEvent.EntityB);
+            if (CollidableGroup[collisionEvent.EntityA].Invulnerable) return;
+            CollisionBehaviourFactory.GetCollisionBehaviour(typeA, typeB).OnCollision(Ecb, collisionEvent.EntityA);
         }
     }
     
