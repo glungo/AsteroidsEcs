@@ -1,6 +1,7 @@
 # Asteroids DOTS
 
 The design philosophy was to keep systems as simple as possible, having 5 major ones and some spawners.
+Its using the Hybrid Renderer and SpriteRenderers to have a better edition experience, but not being the best since support is limited for 2D, probably 2D.Entities package was more suitable. Which ended up causing some issues but were happily solved with some wit.
 
 *Physics + Input*
 
