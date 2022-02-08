@@ -28,13 +28,23 @@ namespace Systems.Collision_Handling
         }
     }
 
+    public struct QueryForRespawnOnCollision : ICollisionHandler
+    {
+        public void OnCollision(EntityCommandBuffer ecb, Entity e)
+        {
+            ecb.DestroyEntity(e);
+            var requestRespawnEntity = ecb.CreateEntity();
+            ecb.AddComponent<RequestRespawn>(requestRespawnEntity);
+        }
+    }
+
     public static class CollisionBehaviourFactory
     {
         private static readonly Dictionary<CollidableType, Type> SRegisteredTypes = new Dictionary<CollidableType, Type>()
         {
             {CollidableType.Meteor, typeof(SpawnMeteorsOnCollision)},
             {CollidableType.Bullet, typeof(DestroyOnCollision)},
-            {CollidableType.Player, typeof(DestroyOnCollision)}
+            {CollidableType.Player, typeof(QueryForRespawnOnCollision)}
         };
         public static ICollisionHandler GetCollisionBehaviour(CollidableType t)
         {

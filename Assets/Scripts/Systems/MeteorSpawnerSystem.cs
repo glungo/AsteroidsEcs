@@ -24,6 +24,7 @@ namespace Systems
         {
             base.OnCreate();
             RequireSingletonForUpdate<MeteorSpawner>();
+            RequireSingletonForUpdate<Player>();
             _random = new Random(123712);
             _random.InitState();
             _endSimulationEcbSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
@@ -88,6 +89,12 @@ namespace Systems
             {
                 Value = new float3(_random.NextFloat(bounds.x, bounds.y), side ? bounds.z : bounds.w, 0)
             });
+        }
+
+        public void Reset()
+        {
+            _spawnedMeteors = 0;
+            _elapsedTime = 0;
         }
     }
 }

@@ -58,5 +58,11 @@ namespace Systems
                     _random.NextFloat(bounds.z + bounds.w / 6, 5 * bounds.w / 6), 0)
             });
         }
+        
+        public void Reset()
+        {
+            _spawnedCount = 0;
+            _elapsedTime = 0;
+        }
     }
 }

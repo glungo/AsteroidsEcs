@@ -12,6 +12,7 @@ namespace Systems
         {
             _input = new CustomInput();
             _input.Keyboard.Enable();
+            RequireSingletonForUpdate<InputDrivenMovement>();
         }
 
         protected override void OnUpdate()

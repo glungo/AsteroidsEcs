@@ -2,7 +2,6 @@
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace Systems
 {
@@ -14,6 +13,7 @@ namespace Systems
             base.OnCreate();
             _endSimulationEcbSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
             RequireSingletonForUpdate<Player>();
+            RequireSingletonForUpdate<UfoSpawner>();
         }
         
         protected override void OnUpdate()
@@ -28,7 +28,6 @@ namespace Systems
                 if (ufo.ElapsedTimeSinceLastShot < ufo.FireCooldown) return;
                 
                 var dir = playerPosition - translation.Value;
-                Debug.DrawRay(translation.Value, dir);
                 var bullet = ecb.Instantiate(entityInQueryIndex, ufo.BulletPrefab);
                 ecb.SetComponent(entityInQueryIndex, bullet, new Rotation
                 {
